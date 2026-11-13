@@ -1,0 +1,25 @@
+query,engine,engine_version,sf,old_rows,new_rows,old_hash,new_hash,identical
+01_filter_clause,duckdb,1.5.6,1,7,7,da990a07b9a7484c601f031d8d682070,da990a07b9a7484c601f031d8d682070,True
+02_rollup,duckdb,1.5.6,1,6,6,3dc79f1346bf3b0862ab75c50d3317ae,3dc79f1346bf3b0862ab75c50d3317ae,True
+03_lateral_topn,duckdb,1.5.6,1,75,75,47093bdb15df4c01884257703c487efc,47093bdb15df4c01884257703c487efc,True
+04_is_distinct_from,duckdb,1.5.6,1,1,1,e079fdb1534b9379b3e591e38af36a07,e079fdb1534b9379b3e591e38af36a07,True
+05_bool_and_or,duckdb,1.5.6,1,1,1,d2da6f9383d84ed7c950902b1efe5434,d2da6f9383d84ed7c950902b1efe5434,True
+06_bonus_qualify,duckdb,1.5.6,1,1,1,9e61e7aed76200ef90c2deae2e796009,9e61e7aed76200ef90c2deae2e796009,True
+01_filter_clause,duckdb,1.5.6,10,7,7,753268d3573ba1538f3f9883c7146ef1,753268d3573ba1538f3f9883c7146ef1,True
+02_rollup,duckdb,1.5.6,10,6,6,979154482a1594e267f18ac7ddcfbc06,979154482a1594e267f18ac7ddcfbc06,True
+03_lateral_topn,duckdb,1.5.6,10,75,75,2fd95f1d2b7c1a1aa4222d68f8e038f8,2fd95f1d2b7c1a1aa4222d68f8e038f8,True
+04_is_distinct_from,duckdb,1.5.6,10,1,1,cdbf227eb5d4a748c6b7dc9c629e8d2c,cdbf227eb5d4a748c6b7dc9c629e8d2c,True
+05_bool_and_or,duckdb,1.5.6,10,1,1,5d9ff9770b5c19bfb8e970871ad86e9c,5d9ff9770b5c19bfb8e970871ad86e9c,True
+06_bonus_qualify,duckdb,1.5.6,10,1,1,00d3d896661fa2cc828596c79a862c15,00d3d896661fa2cc828596c79a862c15,True
+01_filter_clause,postgres,18.6 (Homebrew),1,7,7,04132ab8b60629c8233646eda933708c,04132ab8b60629c8233646eda933708c,True
+02_rollup,postgres,18.6 (Homebrew),1,6,6,3dc79f1346bf3b0862ab75c50d3317ae,3dc79f1346bf3b0862ab75c50d3317ae,True
+03_lateral_topn,postgres,18.6 (Homebrew),1,75,75,47093bdb15df4c01884257703c487efc,47093bdb15df4c01884257703c487efc,True
+04_is_distinct_from,postgres,18.6 (Homebrew),1,1,1,e079fdb1534b9379b3e591e38af36a07,e079fdb1534b9379b3e591e38af36a07,True
+05_bool_and_or,postgres,18.6 (Homebrew),1,1,1,d2da6f9383d84ed7c950902b1efe5434,d2da6f9383d84ed7c950902b1efe5434,True
+06_bonus_qualify,postgres,18.6 (Homebrew),1,1,UNSUPPORTED,9e61e7aed76200ef90c2deae2e796009,"syntax error at or near ""ROW_NUMBER""",False
+01_filter_clause,postgres,18.6 (Homebrew),10,7,7,0f4d7eb8bc3ddcb2c4ceaf1ee25687ba,0f4d7eb8bc3ddcb2c4ceaf1ee25687ba,True
+02_rollup,postgres,18.6 (Homebrew),10,6,6,979154482a1594e267f18ac7ddcfbc06,979154482a1594e267f18ac7ddcfbc06,True
+03_lateral_topn,postgres,18.6 (Homebrew),10,75,75,2fd95f1d2b7c1a1aa4222d68f8e038f8,2fd95f1d2b7c1a1aa4222d68f8e038f8,True
+04_is_distinct_from,postgres,18.6 (Homebrew),10,1,1,cdbf227eb5d4a748c6b7dc9c629e8d2c,cdbf227eb5d4a748c6b7dc9c629e8d2c,True
+05_bool_and_or,postgres,18.6 (Homebrew),10,1,1,5d9ff9770b5c19bfb8e970871ad86e9c,5d9ff9770b5c19bfb8e970871ad86e9c,True
+06_bonus_qualify,postgres,18.6 (Homebrew),10,1,UNSUPPORTED,00d3d896661fa2cc828596c79a862c15,"syntax error at or near ""ROW_NUMBER""",False

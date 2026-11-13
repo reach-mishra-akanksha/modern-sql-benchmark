@@ -1,0 +1,231 @@
+query,engine,engine_version,sf,variant,run,seconds
+01_filter_clause,duckdb,1.5.6,1,old,1,0.011435
+01_filter_clause,duckdb,1.5.6,1,new,1,0.010976
+01_filter_clause,duckdb,1.5.6,1,new,2,0.011204
+01_filter_clause,duckdb,1.5.6,1,old,2,0.011574
+01_filter_clause,duckdb,1.5.6,1,old,3,0.0114
+01_filter_clause,duckdb,1.5.6,1,new,3,0.01179
+01_filter_clause,duckdb,1.5.6,1,new,4,0.011043
+01_filter_clause,duckdb,1.5.6,1,old,4,0.01091
+01_filter_clause,duckdb,1.5.6,1,old,5,0.010767
+01_filter_clause,duckdb,1.5.6,1,new,5,0.010915
+02_rollup,duckdb,1.5.6,1,old,1,0.001919
+02_rollup,duckdb,1.5.6,1,new,1,0.002795
+02_rollup,duckdb,1.5.6,1,new,2,0.002618
+02_rollup,duckdb,1.5.6,1,old,2,0.001665
+02_rollup,duckdb,1.5.6,1,old,3,0.001686
+02_rollup,duckdb,1.5.6,1,new,3,0.002379
+02_rollup,duckdb,1.5.6,1,new,4,0.002393
+02_rollup,duckdb,1.5.6,1,old,4,0.001795
+02_rollup,duckdb,1.5.6,1,old,5,0.001653
+02_rollup,duckdb,1.5.6,1,new,5,0.002346
+03_lateral_topn,duckdb,1.5.6,1,old,1,0.010386
+03_lateral_topn,duckdb,1.5.6,1,new,1,0.010334
+03_lateral_topn,duckdb,1.5.6,1,new,2,0.010151
+03_lateral_topn,duckdb,1.5.6,1,old,2,0.00987
+03_lateral_topn,duckdb,1.5.6,1,old,3,0.010189
+03_lateral_topn,duckdb,1.5.6,1,new,3,0.010427
+03_lateral_topn,duckdb,1.5.6,1,new,4,0.010164
+03_lateral_topn,duckdb,1.5.6,1,old,4,0.009783
+03_lateral_topn,duckdb,1.5.6,1,old,5,0.010294
+03_lateral_topn,duckdb,1.5.6,1,new,5,0.010599
+04_is_distinct_from,duckdb,1.5.6,1,old,1,0.033009
+04_is_distinct_from,duckdb,1.5.6,1,new,1,0.030691
+04_is_distinct_from,duckdb,1.5.6,1,new,2,0.030771
+04_is_distinct_from,duckdb,1.5.6,1,old,2,0.032396
+04_is_distinct_from,duckdb,1.5.6,1,old,3,0.032887
+04_is_distinct_from,duckdb,1.5.6,1,new,3,0.030298
+04_is_distinct_from,duckdb,1.5.6,1,new,4,0.031189
+04_is_distinct_from,duckdb,1.5.6,1,old,4,0.034468
+04_is_distinct_from,duckdb,1.5.6,1,old,5,0.033054
+04_is_distinct_from,duckdb,1.5.6,1,new,5,0.030007
+05_bool_and_or,duckdb,1.5.6,1,old,1,0.022133
+05_bool_and_or,duckdb,1.5.6,1,new,1,0.019793
+05_bool_and_or,duckdb,1.5.6,1,new,2,0.020087
+05_bool_and_or,duckdb,1.5.6,1,old,2,0.022222
+05_bool_and_or,duckdb,1.5.6,1,old,3,0.022142
+05_bool_and_or,duckdb,1.5.6,1,new,3,0.019777
+05_bool_and_or,duckdb,1.5.6,1,new,4,0.020221
+05_bool_and_or,duckdb,1.5.6,1,old,4,0.022193
+05_bool_and_or,duckdb,1.5.6,1,old,5,0.022031
+05_bool_and_or,duckdb,1.5.6,1,new,5,0.019928
+06_bonus_qualify,duckdb,1.5.6,1,old,1,0.025851
+06_bonus_qualify,duckdb,1.5.6,1,new,1,0.024684
+06_bonus_qualify,duckdb,1.5.6,1,new,2,0.026306
+06_bonus_qualify,duckdb,1.5.6,1,old,2,0.024907
+06_bonus_qualify,duckdb,1.5.6,1,old,3,0.025032
+06_bonus_qualify,duckdb,1.5.6,1,new,3,0.025553
+06_bonus_qualify,duckdb,1.5.6,1,new,4,0.0246
+06_bonus_qualify,duckdb,1.5.6,1,old,4,0.025069
+06_bonus_qualify,duckdb,1.5.6,1,old,5,0.02459
+06_bonus_qualify,duckdb,1.5.6,1,new,5,0.025394
+01_filter_clause,duckdb,1.5.6,10,old,1,0.102486
+01_filter_clause,duckdb,1.5.6,10,new,1,0.105567
+01_filter_clause,duckdb,1.5.6,10,new,2,0.10496
+01_filter_clause,duckdb,1.5.6,10,old,2,0.106359
+01_filter_clause,duckdb,1.5.6,10,old,3,0.112766
+01_filter_clause,duckdb,1.5.6,10,new,3,0.113825
+01_filter_clause,duckdb,1.5.6,10,new,4,0.111155
+01_filter_clause,duckdb,1.5.6,10,old,4,0.106366
+01_filter_clause,duckdb,1.5.6,10,old,5,0.10377
+01_filter_clause,duckdb,1.5.6,10,new,5,0.107258
+02_rollup,duckdb,1.5.6,10,old,1,0.009505
+02_rollup,duckdb,1.5.6,10,new,1,0.01562
+02_rollup,duckdb,1.5.6,10,new,2,0.015565
+02_rollup,duckdb,1.5.6,10,old,2,0.009886
+02_rollup,duckdb,1.5.6,10,old,3,0.009344
+02_rollup,duckdb,1.5.6,10,new,3,0.015585
+02_rollup,duckdb,1.5.6,10,new,4,0.015285
+02_rollup,duckdb,1.5.6,10,old,4,0.009439
+02_rollup,duckdb,1.5.6,10,old,5,0.009329
+02_rollup,duckdb,1.5.6,10,new,5,0.01508
+03_lateral_topn,duckdb,1.5.6,10,old,1,0.067104
+03_lateral_topn,duckdb,1.5.6,10,new,1,0.060943
+03_lateral_topn,duckdb,1.5.6,10,new,2,0.060116
+03_lateral_topn,duckdb,1.5.6,10,old,2,0.064088
+03_lateral_topn,duckdb,1.5.6,10,old,3,0.0674
+03_lateral_topn,duckdb,1.5.6,10,new,3,0.06714
+03_lateral_topn,duckdb,1.5.6,10,new,4,0.077565
+03_lateral_topn,duckdb,1.5.6,10,old,4,0.068101
+03_lateral_topn,duckdb,1.5.6,10,old,5,0.069417
+03_lateral_topn,duckdb,1.5.6,10,new,5,0.065748
+04_is_distinct_from,duckdb,1.5.6,10,old,1,0.301942
+04_is_distinct_from,duckdb,1.5.6,10,new,1,0.279445
+04_is_distinct_from,duckdb,1.5.6,10,new,2,0.291869
+04_is_distinct_from,duckdb,1.5.6,10,old,2,0.305309
+04_is_distinct_from,duckdb,1.5.6,10,old,3,0.302431
+04_is_distinct_from,duckdb,1.5.6,10,new,3,0.288812
+04_is_distinct_from,duckdb,1.5.6,10,new,4,0.281463
+04_is_distinct_from,duckdb,1.5.6,10,old,4,0.314317
+04_is_distinct_from,duckdb,1.5.6,10,old,5,0.300636
+04_is_distinct_from,duckdb,1.5.6,10,new,5,0.276164
+05_bool_and_or,duckdb,1.5.6,10,old,1,0.20662
+05_bool_and_or,duckdb,1.5.6,10,new,1,0.187109
+05_bool_and_or,duckdb,1.5.6,10,new,2,0.188505
+05_bool_and_or,duckdb,1.5.6,10,old,2,0.21097
+05_bool_and_or,duckdb,1.5.6,10,old,3,0.207565
+05_bool_and_or,duckdb,1.5.6,10,new,3,0.186722
+05_bool_and_or,duckdb,1.5.6,10,new,4,0.18578
+05_bool_and_or,duckdb,1.5.6,10,old,4,0.203981
+05_bool_and_or,duckdb,1.5.6,10,old,5,0.204862
+05_bool_and_or,duckdb,1.5.6,10,new,5,0.185603
+06_bonus_qualify,duckdb,1.5.6,10,old,1,0.211975
+06_bonus_qualify,duckdb,1.5.6,10,new,1,0.212761
+06_bonus_qualify,duckdb,1.5.6,10,new,2,0.210509
+06_bonus_qualify,duckdb,1.5.6,10,old,2,0.211616
+06_bonus_qualify,duckdb,1.5.6,10,old,3,0.213368
+06_bonus_qualify,duckdb,1.5.6,10,new,3,0.211878
+06_bonus_qualify,duckdb,1.5.6,10,new,4,0.212978
+06_bonus_qualify,duckdb,1.5.6,10,old,4,0.211933
+06_bonus_qualify,duckdb,1.5.6,10,old,5,0.215219
+06_bonus_qualify,duckdb,1.5.6,10,new,5,0.211141
+01_filter_clause,postgres,18.6 (Homebrew),1,old,1,0.461659
+01_filter_clause,postgres,18.6 (Homebrew),1,new,1,0.468654
+01_filter_clause,postgres,18.6 (Homebrew),1,new,2,0.452216
+01_filter_clause,postgres,18.6 (Homebrew),1,old,2,0.453514
+01_filter_clause,postgres,18.6 (Homebrew),1,old,3,0.459659
+01_filter_clause,postgres,18.6 (Homebrew),1,new,3,0.445269
+01_filter_clause,postgres,18.6 (Homebrew),1,new,4,0.444855
+01_filter_clause,postgres,18.6 (Homebrew),1,old,4,0.458006
+01_filter_clause,postgres,18.6 (Homebrew),1,old,5,0.458464
+01_filter_clause,postgres,18.6 (Homebrew),1,new,5,0.446431
+02_rollup,postgres,18.6 (Homebrew),1,old,1,0.220818
+02_rollup,postgres,18.6 (Homebrew),1,new,1,0.229284
+02_rollup,postgres,18.6 (Homebrew),1,new,2,0.225946
+02_rollup,postgres,18.6 (Homebrew),1,old,2,0.217057
+02_rollup,postgres,18.6 (Homebrew),1,old,3,0.217884
+02_rollup,postgres,18.6 (Homebrew),1,new,3,0.224983
+02_rollup,postgres,18.6 (Homebrew),1,new,4,0.221516
+02_rollup,postgres,18.6 (Homebrew),1,old,4,0.211533
+02_rollup,postgres,18.6 (Homebrew),1,old,5,0.214723
+02_rollup,postgres,18.6 (Homebrew),1,new,5,0.216194
+03_lateral_topn,postgres,18.6 (Homebrew),1,old,1,0.115487
+03_lateral_topn,postgres,18.6 (Homebrew),1,new,1,0.201437
+03_lateral_topn,postgres,18.6 (Homebrew),1,new,2,0.199728
+03_lateral_topn,postgres,18.6 (Homebrew),1,old,2,0.114679
+03_lateral_topn,postgres,18.6 (Homebrew),1,old,3,0.113967
+03_lateral_topn,postgres,18.6 (Homebrew),1,new,3,0.20023
+03_lateral_topn,postgres,18.6 (Homebrew),1,new,4,0.199748
+03_lateral_topn,postgres,18.6 (Homebrew),1,old,4,0.114319
+03_lateral_topn,postgres,18.6 (Homebrew),1,old,5,0.112485
+03_lateral_topn,postgres,18.6 (Homebrew),1,new,5,0.200803
+04_is_distinct_from,postgres,18.6 (Homebrew),1,old,1,0.884855
+04_is_distinct_from,postgres,18.6 (Homebrew),1,new,1,0.847131
+04_is_distinct_from,postgres,18.6 (Homebrew),1,new,2,0.866832
+04_is_distinct_from,postgres,18.6 (Homebrew),1,old,2,0.86794
+04_is_distinct_from,postgres,18.6 (Homebrew),1,old,3,0.860035
+04_is_distinct_from,postgres,18.6 (Homebrew),1,new,3,0.873587
+04_is_distinct_from,postgres,18.6 (Homebrew),1,new,4,0.90351
+04_is_distinct_from,postgres,18.6 (Homebrew),1,old,4,0.862894
+04_is_distinct_from,postgres,18.6 (Homebrew),1,old,5,0.881722
+04_is_distinct_from,postgres,18.6 (Homebrew),1,new,5,0.897388
+05_bool_and_or,postgres,18.6 (Homebrew),1,old,1,1.282832
+05_bool_and_or,postgres,18.6 (Homebrew),1,new,1,1.212271
+05_bool_and_or,postgres,18.6 (Homebrew),1,new,2,1.225185
+05_bool_and_or,postgres,18.6 (Homebrew),1,old,2,1.218329
+05_bool_and_or,postgres,18.6 (Homebrew),1,old,3,1.281451
+05_bool_and_or,postgres,18.6 (Homebrew),1,new,3,1.237894
+05_bool_and_or,postgres,18.6 (Homebrew),1,new,4,1.234677
+05_bool_and_or,postgres,18.6 (Homebrew),1,old,4,1.266179
+05_bool_and_or,postgres,18.6 (Homebrew),1,old,5,1.224417
+05_bool_and_or,postgres,18.6 (Homebrew),1,new,5,1.277053
+06_bonus_qualify,postgres,18.6 (Homebrew),1,old,1,0.572825
+06_bonus_qualify,postgres,18.6 (Homebrew),1,old,2,0.562409
+06_bonus_qualify,postgres,18.6 (Homebrew),1,old,3,0.558465
+06_bonus_qualify,postgres,18.6 (Homebrew),1,old,4,0.561822
+06_bonus_qualify,postgres,18.6 (Homebrew),1,old,5,0.561204
+01_filter_clause,postgres,18.6 (Homebrew),10,old,1,8.977712
+01_filter_clause,postgres,18.6 (Homebrew),10,new,1,4.568866
+01_filter_clause,postgres,18.6 (Homebrew),10,new,2,4.471574
+01_filter_clause,postgres,18.6 (Homebrew),10,old,2,4.567852
+01_filter_clause,postgres,18.6 (Homebrew),10,old,3,4.556859
+01_filter_clause,postgres,18.6 (Homebrew),10,new,3,4.444806
+01_filter_clause,postgres,18.6 (Homebrew),10,new,4,4.412537
+01_filter_clause,postgres,18.6 (Homebrew),10,old,4,4.626976
+01_filter_clause,postgres,18.6 (Homebrew),10,old,5,4.53497
+01_filter_clause,postgres,18.6 (Homebrew),10,new,5,4.416437
+02_rollup,postgres,18.6 (Homebrew),10,old,1,2.150859
+02_rollup,postgres,18.6 (Homebrew),10,new,1,2.30924
+02_rollup,postgres,18.6 (Homebrew),10,new,2,2.327
+02_rollup,postgres,18.6 (Homebrew),10,old,2,2.203312
+02_rollup,postgres,18.6 (Homebrew),10,old,3,2.195733
+02_rollup,postgres,18.6 (Homebrew),10,new,3,2.37268
+02_rollup,postgres,18.6 (Homebrew),10,new,4,2.390799
+02_rollup,postgres,18.6 (Homebrew),10,old,4,2.141847
+02_rollup,postgres,18.6 (Homebrew),10,old,5,2.139084
+02_rollup,postgres,18.6 (Homebrew),10,new,5,2.333849
+03_lateral_topn,postgres,18.6 (Homebrew),10,old,1,0.723956
+03_lateral_topn,postgres,18.6 (Homebrew),10,new,1,3.160033
+03_lateral_topn,postgres,18.6 (Homebrew),10,new,2,3.154543
+03_lateral_topn,postgres,18.6 (Homebrew),10,old,2,0.735682
+03_lateral_topn,postgres,18.6 (Homebrew),10,old,3,0.739933
+03_lateral_topn,postgres,18.6 (Homebrew),10,new,3,3.092066
+03_lateral_topn,postgres,18.6 (Homebrew),10,new,4,3.097968
+03_lateral_topn,postgres,18.6 (Homebrew),10,old,4,0.719025
+03_lateral_topn,postgres,18.6 (Homebrew),10,old,5,0.713027
+03_lateral_topn,postgres,18.6 (Homebrew),10,new,5,3.064036
+04_is_distinct_from,postgres,18.6 (Homebrew),10,old,1,9.927296
+04_is_distinct_from,postgres,18.6 (Homebrew),10,new,1,9.82164
+04_is_distinct_from,postgres,18.6 (Homebrew),10,new,2,9.945616
+04_is_distinct_from,postgres,18.6 (Homebrew),10,old,2,9.987582
+04_is_distinct_from,postgres,18.6 (Homebrew),10,old,3,10.056723
+04_is_distinct_from,postgres,18.6 (Homebrew),10,new,3,9.812497
+04_is_distinct_from,postgres,18.6 (Homebrew),10,new,4,10.241249
+04_is_distinct_from,postgres,18.6 (Homebrew),10,old,4,10.327987
+04_is_distinct_from,postgres,18.6 (Homebrew),10,old,5,10.102649
+04_is_distinct_from,postgres,18.6 (Homebrew),10,new,5,9.979277
+05_bool_and_or,postgres,18.6 (Homebrew),10,old,1,22.920532
+05_bool_and_or,postgres,18.6 (Homebrew),10,new,1,20.55426
+05_bool_and_or,postgres,18.6 (Homebrew),10,new,2,20.946261
+05_bool_and_or,postgres,18.6 (Homebrew),10,old,2,22.000279
+05_bool_and_or,postgres,18.6 (Homebrew),10,old,3,22.692538
+05_bool_and_or,postgres,18.6 (Homebrew),10,new,3,22.397802
+05_bool_and_or,postgres,18.6 (Homebrew),10,new,4,21.081151
+05_bool_and_or,postgres,18.6 (Homebrew),10,old,4,21.137891
+05_bool_and_or,postgres,18.6 (Homebrew),10,old,5,21.49473
+05_bool_and_or,postgres,18.6 (Homebrew),10,new,5,22.615337
+06_bonus_qualify,postgres,18.6 (Homebrew),10,old,1,6.921823
+06_bonus_qualify,postgres,18.6 (Homebrew),10,old,2,6.905882
+06_bonus_qualify,postgres,18.6 (Homebrew),10,old,3,6.685249
+06_bonus_qualify,postgres,18.6 (Homebrew),10,old,4,7.108098
+06_bonus_qualify,postgres,18.6 (Homebrew),10,old,5,6.720382

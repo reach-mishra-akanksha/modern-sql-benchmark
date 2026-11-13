@@ -1,0 +1,39 @@
+-- -- 05 Classic: turn conditions into 1/0, then MIN (= all) or MAX (= any)
+-- Business question: How many orders arrived completely on time,
+-- and how many had at least one item returned?
+SELECT
+    SUM(CASE WHEN all_on_time  THEN 1 ELSE 0 END) AS fully_on_time_orders,
+    SUM(CASE WHEN any_returned THEN 1 ELSE 0 END) AS orders_with_a_return
+FROM (
+    SELECT l_orderkey,
+           MIN(CASE WHEN l_receiptdate <= l_commitdate THEN 1 ELSE 0 END) = 1 AS all_on_time,
+           MAX(CASE WHEN l_returnflag = 'R'            THEN 1 ELSE 0 END) = 1 AS any_returned
+    FROM lineitem
+    GROUP BY l_orderkey
+) per_order
+
+Aggregate  (cost=543891.38..543891.39 rows=1 width=16) (actual time=1354.895..1379.862 rows=1.00 loops=1)
+  Buffers: shared hit=11883 read=95669, temp read=33376 written=59912
+  ->  Finalize GroupAggregate  (cost=410342.01..537774.98 rows=407760 width=10) (actual time=1004.696..1328.807 rows=1500000.00 loops=1)
+        Group Key: lineitem.l_orderkey
+        Buffers: shared hit=11883 read=95669, temp read=33376 written=59912
+        ->  Gather Merge  (cost=410342.01..524318.90 rows=978624 width=16) (actual time=1004.691..1163.814 rows=1501712.00 loops=1)
+              Workers Planned: 2
+              Workers Launched: 2
+              Buffers: shared hit=11883 read=95669, temp read=33376 written=59912
+              ->  Sort  (cost=409341.98..410361.38 rows=407760 width=16) (actual time=999.978..1028.661 rows=500570.67 loops=3)
+                    Sort Key: lineitem.l_orderkey
+                    Sort Method: external merge  Disk: 12928kB
+                    Buffers: shared hit=11883 read=95669, temp read=33376 written=59912
+                    Worker 0:  Sort Method: external merge  Disk: 12664kB
+                    Worker 1:  Sort Method: external merge  Disk: 12648kB
+                    ->  Partial HashAggregate  (cost=330994.86..364372.13 rows=407760 width=16) (actual time=656.694..922.472 rows=500570.67 loops=3)
+                          Group Key: lineitem.l_orderkey
+                          Planned Partitions: 8  Batches: 9  Memory Usage: 7513kB  Disk Usage: 80896kB
+                          Buffers: shared hit=11867 read=95669, temp read=28596 written=55113
+                          Worker 0:  Batches: 9  Memory Usage: 7513kB  Disk Usage: 80624kB
+                          Worker 1:  Batches: 9  Memory Usage: 7513kB  Disk Usage: 80568kB
+                          ->  Parallel Seq Scan on lineitem  (cost=0.00..132538.39 rows=2500239 width=18) (actual time=0.119..111.674 rows=2000405.00 loops=3)
+                                Buffers: shared hit=11867 read=95669
+Planning Time: 0.072 ms
+Execution Time: 1396.689 ms

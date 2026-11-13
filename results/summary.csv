@@ -1,0 +1,47 @@
+query,engine,engine_version,sf,variant,median_s,min_s,max_s,n
+01_filter_clause,duckdb,1.5.6,1,old,0.0114,0.010767,0.011574,5
+01_filter_clause,duckdb,1.5.6,1,new,0.011043,0.010915,0.01179,5
+02_rollup,duckdb,1.5.6,1,old,0.001686,0.001653,0.001919,5
+02_rollup,duckdb,1.5.6,1,new,0.002393,0.002346,0.002795,5
+03_lateral_topn,duckdb,1.5.6,1,old,0.010189,0.009783,0.010386,5
+03_lateral_topn,duckdb,1.5.6,1,new,0.010334,0.010151,0.010599,5
+04_is_distinct_from,duckdb,1.5.6,1,old,0.033009,0.032396,0.034468,5
+04_is_distinct_from,duckdb,1.5.6,1,new,0.030691,0.030007,0.031189,5
+05_bool_and_or,duckdb,1.5.6,1,old,0.022142,0.022031,0.022222,5
+05_bool_and_or,duckdb,1.5.6,1,new,0.019928,0.019777,0.020221,5
+06_bonus_qualify,duckdb,1.5.6,1,old,0.025032,0.02459,0.025851,5
+06_bonus_qualify,duckdb,1.5.6,1,new,0.025394,0.0246,0.026306,5
+01_filter_clause,duckdb,1.5.6,10,old,0.106359,0.102486,0.112766,5
+01_filter_clause,duckdb,1.5.6,10,new,0.107258,0.10496,0.113825,5
+02_rollup,duckdb,1.5.6,10,old,0.009439,0.009329,0.009886,5
+02_rollup,duckdb,1.5.6,10,new,0.015565,0.01508,0.01562,5
+03_lateral_topn,duckdb,1.5.6,10,old,0.0674,0.064088,0.069417,5
+03_lateral_topn,duckdb,1.5.6,10,new,0.065748,0.060116,0.077565,5
+04_is_distinct_from,duckdb,1.5.6,10,old,0.302431,0.300636,0.314317,5
+04_is_distinct_from,duckdb,1.5.6,10,new,0.281463,0.276164,0.291869,5
+05_bool_and_or,duckdb,1.5.6,10,old,0.20662,0.203981,0.21097,5
+05_bool_and_or,duckdb,1.5.6,10,new,0.186722,0.185603,0.188505,5
+06_bonus_qualify,duckdb,1.5.6,10,old,0.211975,0.211616,0.215219,5
+06_bonus_qualify,duckdb,1.5.6,10,new,0.211878,0.210509,0.212978,5
+01_filter_clause,postgres,18.6 (Homebrew),1,old,0.458464,0.453514,0.461659,5
+01_filter_clause,postgres,18.6 (Homebrew),1,new,0.446431,0.444855,0.468654,5
+02_rollup,postgres,18.6 (Homebrew),1,old,0.217057,0.211533,0.220818,5
+02_rollup,postgres,18.6 (Homebrew),1,new,0.224983,0.216194,0.229284,5
+03_lateral_topn,postgres,18.6 (Homebrew),1,old,0.114319,0.112485,0.115487,5
+03_lateral_topn,postgres,18.6 (Homebrew),1,new,0.20023,0.199728,0.201437,5
+04_is_distinct_from,postgres,18.6 (Homebrew),1,old,0.86794,0.860035,0.884855,5
+04_is_distinct_from,postgres,18.6 (Homebrew),1,new,0.873587,0.847131,0.90351,5
+05_bool_and_or,postgres,18.6 (Homebrew),1,old,1.266179,1.218329,1.282832,5
+05_bool_and_or,postgres,18.6 (Homebrew),1,new,1.234677,1.212271,1.277053,5
+06_bonus_qualify,postgres,18.6 (Homebrew),1,old,0.561822,0.558465,0.572825,5
+01_filter_clause,postgres,18.6 (Homebrew),10,old,4.567852,4.53497,8.977712,5
+01_filter_clause,postgres,18.6 (Homebrew),10,new,4.444806,4.412537,4.568866,5
+02_rollup,postgres,18.6 (Homebrew),10,old,2.150859,2.139084,2.203312,5
+02_rollup,postgres,18.6 (Homebrew),10,new,2.333849,2.30924,2.390799,5
+03_lateral_topn,postgres,18.6 (Homebrew),10,old,0.723956,0.713027,0.739933,5
+03_lateral_topn,postgres,18.6 (Homebrew),10,new,3.097968,3.064036,3.160033,5
+04_is_distinct_from,postgres,18.6 (Homebrew),10,old,10.056723,9.927296,10.327987,5
+04_is_distinct_from,postgres,18.6 (Homebrew),10,new,9.945616,9.812497,10.241249,5
+05_bool_and_or,postgres,18.6 (Homebrew),10,old,22.000279,21.137891,22.920532,5
+05_bool_and_or,postgres,18.6 (Homebrew),10,new,21.081151,20.55426,22.615337,5
+06_bonus_qualify,postgres,18.6 (Homebrew),10,old,6.905882,6.685249,7.108098,5

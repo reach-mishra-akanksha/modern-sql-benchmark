@@ -1,0 +1,33 @@
+-- -- 04 Classic: spell out the NULL cases by hand
+-- Business question: How often do customers change the priority of their
+-- orders? Count every order whose priority differs from the same customer's
+-- previous order (a customer's first order counts as a change).
+SELECT COUNT(*) AS priority_changes
+FROM (
+    SELECT o_orderpriority,
+           LAG(o_orderpriority) OVER (PARTITION BY o_custkey
+                                      ORDER BY o_orderdate, o_orderkey) AS prev_priority
+    FROM orders
+) o
+WHERE o_orderpriority <> prev_priority
+   OR (o_orderpriority IS NULL AND prev_priority IS NOT NULL)
+   OR (o_orderpriority IS NOT NULL AND prev_priority IS NULL)
+
+Aggregate  (cost=3485479.06..3485479.07 rows=1 width=8) (actual time=11616.930..11616.931 rows=1.00 loops=1)
+  Buffers: shared hit=14015 read=253081, temp read=238892 written=239178
+  ->  Subquery Scan on o  (cost=2923096.40..3448161.02 rows=14927213 width=0) (actual time=6513.368..11323.357 rows=12239273.00 loops=1)
+        Filter: (((o.o_orderpriority)::text <> (o.prev_priority)::text) OR ((o.o_orderpriority IS NULL) AND (o.prev_priority IS NOT NULL)) OR ((o.o_orderpriority IS NOT NULL) AND (o.prev_priority IS NULL)))
+        Rows Removed by Filter: 2760727
+        Buffers: shared hit=14015 read=253081, temp read=238892 written=239178
+        ->  WindowAgg  (cost=2923096.40..3260637.94 rows=15001847 width=61) (actual time=6513.367..10583.242 rows=15000000.00 loops=1)
+              Window: w1 AS (PARTITION BY orders.o_custkey ORDER BY orders.o_orderdate, orders.o_orderkey)
+              Storage: Memory  Maximum Storage: 17kB
+              Buffers: shared hit=14015 read=253081, temp read=238892 written=239178
+              ->  Sort  (cost=2923096.38..2960601.00 rows=15001847 width=29) (actual time=6513.347..7443.314 rows=15000000.00 loops=1)
+                    Sort Key: orders.o_custkey, orders.o_orderdate, orders.o_orderkey
+                    Sort Method: external merge  Disk: 637072kB
+                    Buffers: shared hit=14015 read=253081, temp read=238892 written=239178
+                    ->  Seq Scan on orders  (cost=0.00..417114.47 rows=15001847 width=29) (actual time=0.075..1222.037 rows=15000000.00 loops=1)
+                          Buffers: shared hit=14015 read=253081
+Planning Time: 0.056 ms
+Execution Time: 11797.717 ms

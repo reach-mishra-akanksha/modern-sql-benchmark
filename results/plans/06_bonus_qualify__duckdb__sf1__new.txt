@@ -1,0 +1,121 @@
+-- -- 06 BONUS (DuckDB only): QUALIFY. Postgres will report it as unsupported.
+-- Business question: What is each customer's most recent order?
+-- Latest order per customer (modern: QUALIFY)
+SELECT COUNT(*) AS customers, SUM(o_totalprice) AS total
+FROM (
+  SELECT * FROM orders
+  QUALIFY ROW_NUMBER() OVER (PARTITION BY o_custkey
+                             ORDER BY o_orderdate DESC, o_orderkey DESC) = 1
+) t
+
+┌─────────────────────────────────────┐
+│┌───────────────────────────────────┐│
+││    Query Profiling Information    ││
+│└───────────────────────────────────┘│
+└─────────────────────────────────────┘
+EXPLAIN ANALYZE -- 06 BONUS (DuckDB only): QUALIFY. Postgres will report it as unsupported. -- Business question: What is each customer's most recent order? -- Latest order per customer (modern: QUALIFY) SELECT COUNT(*) AS customers, SUM(o_totalprice) AS total FROM (   SELECT * FROM orders   QUALIFY ROW_NUMBER() OVER (PARTITION BY o_custkey                              ORDER BY o_orderdate DESC, o_orderkey DESC) = 1 ) t
+┌────────────────────────────────────────────────┐
+│┌──────────────────────────────────────────────┐│
+││              Total Time: 0.0253s             ││
+│└──────────────────────────────────────────────┘│
+└────────────────────────────────────────────────┘
+┌───────────────────────────┐
+│           QUERY           │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│      EXPLAIN_ANALYZE      │
+│    ────────────────────   │
+│                           │
+│           0 rows          │
+│           0.00s           │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│    UNGROUPED_AGGREGATE    │
+│    ────────────────────   │
+│        Aggregates:        │
+│        count_star()       │
+│    sum_no_overflow(#0)    │
+│                           │
+│                           │
+│                           │
+│           1 row           │
+│           0.00s           │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│         PROJECTION        │
+│    ────────────────────   │
+│        o_totalprice       │
+│                           │
+│                           │
+│                           │
+│        99,996 rows        │
+│           0.00s           │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│         PROJECTION        │
+│    ────────────────────   │
+│             #3            │
+│                           │
+│                           │
+│                           │
+│        99,996 rows        │
+│           0.00s           │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│           FILTER          │
+│    ────────────────────   │
+│          (#4 = 1)         │
+│                           │
+│                           │
+│                           │
+│        99,996 rows        │
+│           0.00s           │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│         PROJECTION        │
+│    ────────────────────   │
+│             #0            │
+│             #1            │
+│             #2            │
+│             #3            │
+│             #4            │
+│                           │
+│                           │
+│                           │
+│       1,500,000 rows      │
+│           0.00s           │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│           WINDOW          │
+│    ────────────────────   │
+│        Projections:       │
+│     ROW_NUMBER() OVER     │
+│  (PARTITION BY o_custkey  │
+│  ORDER BY o_orderdate DESC│
+│   NULLS LAST, o_orderkey  │
+│      DESC NULLS LAST)     │
+│                           │
+│                           │
+│                           │
+│       1,500,000 rows      │
+│           0.26s           │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│         TABLE_SCAN        │
+│    ────────────────────   │
+│           Table:          │
+│    tpch_sf1.main.orders   │
+│                           │
+│   Type: Sequential Scan   │
+│                           │
+│        Projections:       │
+│         o_custkey         │
+│        o_orderdate        │
+│         o_orderkey        │
+│        o_totalprice       │
+│                           │
+│                           │
+│                           │
+│       1,500,000 rows      │
+│           0.00s           │
+└───────────────────────────┘

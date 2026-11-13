@@ -1,0 +1,35 @@
+-- -- 01 FILTER (WHERE ...)
+-- Business question: Each year, how many items did we ship,
+-- how many went by air, and how many arrived late?
+SELECT
+    EXTRACT(YEAR FROM l_shipdate)                         AS ship_year,
+    COUNT(*)                                              AS total_items,
+    COUNT(*) FILTER (WHERE l_shipmode = 'AIR')            AS air_items,
+    COUNT(*) FILTER (WHERE l_receiptdate > l_commitdate)  AS late_items
+FROM lineitem
+GROUP BY EXTRACT(YEAR FROM l_shipdate)
+ORDER BY ship_year
+
+Finalize GroupAggregate  (cost=1763313.73..1764104.44 rows=2502 width=56) (actual time=4934.853..4936.314 rows=7.00 loops=1)
+  Group Key: (EXTRACT(year FROM l_shipdate))
+  Buffers: shared hit=15463 read=1059447
+  ->  Gather Merge  (cost=1763313.73..1764013.12 rows=6005 width=56) (actual time=4934.848..4936.306 rows=21.00 loops=1)
+        Workers Planned: 2
+        Workers Launched: 2
+        Buffers: shared hit=15463 read=1059447
+        ->  Sort  (cost=1762313.71..1762319.97 rows=2502 width=56) (actual time=4933.054..4933.054 rows=7.00 loops=3)
+              Sort Key: (EXTRACT(year FROM l_shipdate))
+              Sort Method: quicksort  Memory: 25kB
+              Buffers: shared hit=15463 read=1059447
+              Worker 0:  Sort Method: quicksort  Memory: 25kB
+              Worker 1:  Sort Method: quicksort  Memory: 25kB
+              ->  Partial HashAggregate  (cost=1762141.21..1762172.49 rows=2502 width=56) (actual time=4933.033..4933.042 rows=7.00 loops=3)
+                    Group Key: EXTRACT(year FROM l_shipdate)
+                    Batches: 1  Memory Usage: 97kB
+                    Buffers: shared hit=15449 read=1059447
+                    Worker 0:  Batches: 1  Memory Usage: 97kB
+                    Worker 1:  Batches: 1  Memory Usage: 97kB
+                    ->  Parallel Seq Scan on lineitem  (cost=0.00..1387280.19 rows=24990735 width=45) (actual time=0.306..2837.171 rows=19995350.67 loops=3)
+                          Buffers: shared hit=15449 read=1059447
+Planning Time: 0.043 ms
+Execution Time: 4936.338 ms

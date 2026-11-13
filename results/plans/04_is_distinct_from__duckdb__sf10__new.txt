@@ -1,0 +1,115 @@
+-- -- 04 IS DISTINCT FROM
+-- Business question: How often do customers change the priority of their
+-- orders? Count every order whose priority differs from the same customer's
+-- previous order (a customer's first order counts as a change).
+SELECT COUNT(*) AS priority_changes
+FROM (
+    SELECT o_orderpriority,
+           LAG(o_orderpriority) OVER (PARTITION BY o_custkey
+                                      ORDER BY o_orderdate, o_orderkey) AS prev_priority
+    FROM orders
+) o
+WHERE o_orderpriority IS DISTINCT FROM prev_priority
+
+┌─────────────────────────────────────┐
+│┌───────────────────────────────────┐│
+││    Query Profiling Information    ││
+│└───────────────────────────────────┘│
+└─────────────────────────────────────┘
+EXPLAIN ANALYZE -- 04 IS DISTINCT FROM -- Business question: How often do customers change the priority of their -- orders? Count every order whose priority differs from the same customer's -- previous order (a customer's first order counts as a change). SELECT COUNT(*) AS priority_changes FROM (     SELECT o_orderpriority,            LAG(o_orderpriority) OVER (PARTITION BY o_custkey                                       ORDER BY o_orderdate, o_orderkey) AS prev_priority     FROM orders ) o WHERE o_orderpriority IS DISTINCT FROM prev_priority
+┌────────────────────────────────────────────────┐
+│┌──────────────────────────────────────────────┐│
+││              Total Time: 0.279s              ││
+│└──────────────────────────────────────────────┘│
+└────────────────────────────────────────────────┘
+┌───────────────────────────┐
+│           QUERY           │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│      EXPLAIN_ANALYZE      │
+│    ────────────────────   │
+│                           │
+│           0 rows          │
+│           0.00s           │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│    UNGROUPED_AGGREGATE    │
+│    ────────────────────   │
+│        Aggregates:        │
+│        count_star()       │
+│                           │
+│                           │
+│                           │
+│           1 row           │
+│           0.00s           │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│         PROJECTION        │
+│    ────────────────────   │
+│             42            │
+│                           │
+│                           │
+│                           │
+│      12,239,273 rows      │
+│           0.00s           │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│           FILTER          │
+│    ────────────────────   │
+│    (o_orderpriority IS    │
+│        DISTINCT FROM      │
+│       prev_priority)      │
+│                           │
+│                           │
+│                           │
+│      12,239,273 rows      │
+│           0.06s           │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│         PROJECTION        │
+│    ────────────────────   │
+│             #0            │
+│             #1            │
+│             #2            │
+│             #3            │
+│             #4            │
+│                           │
+│                           │
+│                           │
+│      15,000,000 rows      │
+│           0.00s           │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│           WINDOW          │
+│    ────────────────────   │
+│        Projections:       │
+│ LAG(o_orderpriority) OVER │
+│  (PARTITION BY o_custkey  │
+│  ORDER BY o_orderdate ASC │
+│   NULLS LAST, o_orderkey  │
+│       ASC NULLS LAST)     │
+│                           │
+│                           │
+│                           │
+│      15,000,000 rows      │
+│           3.17s           │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│         TABLE_SCAN        │
+│    ────────────────────   │
+│           Table:          │
+│   tpch_sf10.main.orders   │
+│                           │
+│   Type: Sequential Scan   │
+│                           │
+│        Projections:       │
+│      o_orderpriority      │
+│         o_custkey         │
+│        o_orderdate        │
+│         o_orderkey        │
+│                           │
+│                           │
+│                           │
+│      15,000,000 rows      │
+│           0.04s           │
+└───────────────────────────┘

@@ -1,0 +1,7 @@
+data/
+.venv/
+NOTES.md
+screenshots/
+.DS_Store
+__pycache__/
+

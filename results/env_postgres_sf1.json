@@ -1,0 +1,12 @@
+{
+  "timestamp_utc": "2026-11-05T16:46:43.297115+00:00",
+  "engine": "postgres",
+  "engine_version": "18.6 (Homebrew)",
+  "sf": 1,
+  "os": "macOS-26.7.2-arm64-arm-64bit-Mach-O",
+  "python": "3.13.5",
+  "cpu": "Apple M2 Pro",
+  "cpu_count": 12,
+  "ram_gb": "32",
+  "git_commit": "ca9e53d"
+}

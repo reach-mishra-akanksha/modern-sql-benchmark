@@ -1,0 +1,24 @@
+-- -- 02 ROLLUP
+-- Business question: How many orders do we have at each priority level,
+-- what are they worth, and what is the grand total?
+SELECT
+    o_orderpriority    AS priority,
+    COUNT(*)           AS orders,
+    SUM(o_totalprice)  AS order_value
+FROM orders
+GROUP BY ROLLUP (o_orderpriority)
+ORDER BY priority NULLS LAST
+
+Sort  (cost=604637.71..604637.73 rows=6 width=49) (actual time=2641.076..2641.077 rows=6.00 loops=1)
+  Sort Key: o_orderpriority
+  Sort Method: quicksort  Memory: 25kB
+  Buffers: shared hit=15664 read=251432
+  ->  MixedAggregate  (cost=0.00..604637.63 rows=6 width=49) (actual time=2641.063..2641.065 rows=6.00 loops=1)
+        Hash Key: o_orderpriority
+        Group Key: ()
+        Batches: 1  Memory Usage: 32kB
+        Buffers: shared hit=15664 read=251432
+        ->  Seq Scan on orders  (cost=0.00..417114.47 rows=15001847 width=17) (actual time=0.193..676.837 rows=15000000.00 loops=1)
+              Buffers: shared hit=15664 read=251432
+Planning Time: 0.038 ms
+Execution Time: 2641.092 ms

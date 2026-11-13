@@ -1,0 +1,70 @@
+Generating TPC-H SF1 in DuckDB (one-time)...
+   generating with tpchgen-cli
+   generated with tpchgen-cli
+[duckdb SF1] 01_filter_clause: identical
+   old 0.0114s | new 0.0110s | new/old = 0.97x
+[duckdb SF1] 02_rollup: identical
+   old 0.0017s | new 0.0024s | new/old = 1.42x
+[duckdb SF1] 03_lateral_topn: identical
+   old 0.0102s | new 0.0103s | new/old = 1.01x
+[duckdb SF1] 04_is_distinct_from: identical
+   old 0.0330s | new 0.0307s | new/old = 0.93x
+[duckdb SF1] 05_bool_and_or: identical
+   old 0.0221s | new 0.0199s | new/old = 0.90x
+[duckdb SF1] 06_bonus_qualify: identical
+   old 0.0250s | new 0.0254s | new/old = 1.01x
+Generating TPC-H SF10 in DuckDB (one-time)...
+   generating with tpchgen-cli
+   generated with tpchgen-cli
+[duckdb SF10] 01_filter_clause: identical
+   old 0.1064s | new 0.1073s | new/old = 1.01x
+[duckdb SF10] 02_rollup: identical
+   old 0.0094s | new 0.0156s | new/old = 1.65x
+[duckdb SF10] 03_lateral_topn: identical
+   old 0.0674s | new 0.0657s | new/old = 0.98x
+[duckdb SF10] 04_is_distinct_from: identical
+   old 0.3024s | new 0.2815s | new/old = 0.93x
+[duckdb SF10] 05_bool_and_or: identical
+   old 0.2066s | new 0.1867s | new/old = 0.90x
+[duckdb SF10] 06_bonus_qualify: identical
+   old 0.2120s | new 0.2119s | new/old = 1.00x
+Loading TPC-H SF1 into Postgres from DuckDB (one-time)...
+   loaded region
+   loaded nation
+   loaded supplier
+   loaded customer
+   loaded part
+   loaded partsupp
+   loaded orders
+   loaded lineitem
+[postgres SF1] 01_filter_clause: identical
+   old 0.4585s | new 0.4464s | new/old = 0.97x
+[postgres SF1] 02_rollup: identical
+   old 0.2171s | new 0.2250s | new/old = 1.04x
+[postgres SF1] 03_lateral_topn: identical
+   old 0.1143s | new 0.2002s | new/old = 1.75x
+[postgres SF1] 04_is_distinct_from: identical
+   old 0.8679s | new 0.8736s | new/old = 1.01x
+[postgres SF1] 05_bool_and_or: identical
+   old 1.2662s | new 1.2347s | new/old = 0.98x
+[postgres SF1] 06_bonus_qualify: unsupported: ['new']
+Loading TPC-H SF10 into Postgres from DuckDB (one-time)...
+   loaded region
+   loaded nation
+   loaded supplier
+   loaded customer
+   loaded part
+   loaded partsupp
+   loaded orders
+   loaded lineitem
+[postgres SF10] 01_filter_clause: identical
+   old 4.5679s | new 4.4448s | new/old = 0.97x
+[postgres SF10] 02_rollup: identical
+   old 2.1509s | new 2.3338s | new/old = 1.09x
+[postgres SF10] 03_lateral_topn: identical
+   old 0.7240s | new 3.0980s | new/old = 4.28x
+[postgres SF10] 04_is_distinct_from: identical
+   old 10.0567s | new 9.9456s | new/old = 0.99x
+[postgres SF10] 05_bool_and_or: identical
+   old 22.0003s | new 21.0812s | new/old = 0.96x
+[postgres SF10] 06_bonus_qualify: unsupported: ['new']

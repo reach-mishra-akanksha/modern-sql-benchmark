@@ -1,0 +1,35 @@
+-- -- 01 Classic: CASE inside the aggregate
+-- Business question: Each year, how many items did we ship,
+-- how many went by air, and how many arrived late?
+SELECT
+    EXTRACT(YEAR FROM l_shipdate)                              AS ship_year,
+    COUNT(*)                                                   AS total_items,
+    COUNT(CASE WHEN l_shipmode = 'AIR' THEN 1 END)             AS air_items,
+    COUNT(CASE WHEN l_receiptdate > l_commitdate THEN 1 END)   AS late_items
+FROM lineitem
+GROUP BY EXTRACT(YEAR FROM l_shipdate)
+ORDER BY ship_year
+
+Finalize GroupAggregate  (cost=177465.47..178257.76 rows=2507 width=56) (actual time=509.926..511.209 rows=7.00 loops=1)
+  Group Key: (EXTRACT(year FROM l_shipdate))
+  Buffers: shared hit=16026 read=91524
+  ->  Gather Merge  (cost=177465.47..178166.25 rows=6017 width=56) (actual time=509.922..511.202 rows=21.00 loops=1)
+        Workers Planned: 2
+        Workers Launched: 2
+        Buffers: shared hit=16026 read=91524
+        ->  Sort  (cost=176465.45..176471.72 rows=2507 width=56) (actual time=507.950..507.951 rows=7.00 loops=3)
+              Sort Key: (EXTRACT(year FROM l_shipdate))
+              Sort Method: quicksort  Memory: 25kB
+              Buffers: shared hit=16026 read=91524
+              Worker 0:  Sort Method: quicksort  Memory: 25kB
+              Worker 1:  Sort Method: quicksort  Memory: 25kB
+              ->  Partial HashAggregate  (cost=176292.57..176323.91 rows=2507 width=56) (actual time=507.928..507.938 rows=7.00 loops=3)
+                    Group Key: EXTRACT(year FROM l_shipdate)
+                    Batches: 1  Memory Usage: 97kB
+                    Buffers: shared hit=16012 read=91524
+                    Worker 0:  Batches: 1  Memory Usage: 97kB
+                    Worker 1:  Batches: 1  Memory Usage: 97kB
+                    ->  Parallel Seq Scan on lineitem  (cost=0.00..138788.99 rows=2500239 width=45) (actual time=0.162..284.021 rows=2000405.00 loops=3)
+                          Buffers: shared hit=16012 read=91524
+Planning Time: 0.055 ms
+Execution Time: 511.242 ms

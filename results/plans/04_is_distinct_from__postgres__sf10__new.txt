@@ -1,0 +1,31 @@
+-- -- 04 IS DISTINCT FROM
+-- Business question: How often do customers change the priority of their
+-- orders? Count every order whose priority differs from the same customer's
+-- previous order (a customer's first order counts as a change).
+SELECT COUNT(*) AS priority_changes
+FROM (
+    SELECT o_orderpriority,
+           LAG(o_orderpriority) OVER (PARTITION BY o_custkey
+                                      ORDER BY o_orderdate, o_orderkey) AS prev_priority
+    FROM orders
+) o
+WHERE o_orderpriority IS DISTINCT FROM prev_priority
+
+Aggregate  (cost=3485478.12..3485478.13 rows=1 width=8) (actual time=11509.064..11509.065 rows=1.00 loops=1)
+  Buffers: shared hit=14125 read=252971, temp read=238892 written=239178
+  ->  Subquery Scan on o  (cost=2923096.40..3448161.02 rows=14926838 width=0) (actual time=6457.339..11212.906 rows=12239273.00 loops=1)
+        Filter: ((o.o_orderpriority)::text IS DISTINCT FROM (o.prev_priority)::text)
+        Rows Removed by Filter: 2760727
+        Buffers: shared hit=14125 read=252971, temp read=238892 written=239178
+        ->  WindowAgg  (cost=2923096.40..3260637.94 rows=15001847 width=61) (actual time=6457.338..10533.901 rows=15000000.00 loops=1)
+              Window: w1 AS (PARTITION BY orders.o_custkey ORDER BY orders.o_orderdate, orders.o_orderkey)
+              Storage: Memory  Maximum Storage: 17kB
+              Buffers: shared hit=14125 read=252971, temp read=238892 written=239178
+              ->  Sort  (cost=2923096.38..2960601.00 rows=15001847 width=29) (actual time=6457.330..7391.372 rows=15000000.00 loops=1)
+                    Sort Key: orders.o_custkey, orders.o_orderdate, orders.o_orderkey
+                    Sort Method: external merge  Disk: 637072kB
+                    Buffers: shared hit=14125 read=252971, temp read=238892 written=239178
+                    ->  Seq Scan on orders  (cost=0.00..417114.47 rows=15001847 width=29) (actual time=0.059..1219.499 rows=15000000.00 loops=1)
+                          Buffers: shared hit=14125 read=252971
+Planning Time: 0.049 ms
+Execution Time: 11528.106 ms

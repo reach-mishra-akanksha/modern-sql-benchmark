@@ -1,0 +1,29 @@
+-- -- 06 BONUS classic version: subquery + ROW_NUMBER
+-- Business question: What is each customer's most recent order?
+-- Latest order per customer (classic: subquery + ROW_NUMBER)
+SELECT COUNT(*) AS customers, SUM(o_totalprice) AS total
+FROM (
+  SELECT *, ROW_NUMBER() OVER (PARTITION BY o_custkey
+                               ORDER BY o_orderdate DESC, o_orderkey DESC) AS rn
+  FROM orders
+) t
+WHERE rn = 1
+
+Aggregate  (cost=3448189.07..3448189.08 rows=1 width=40) (actual time=7612.449..7612.450 rows=1.00 loops=1)
+  Buffers: shared hit=12009 read=255087, temp read=214334 written=214603
+  ->  Subquery Scan on t  (cost=2922804.56..3447814.06 rows=75001 width=8) (actual time=6058.506..7567.170 rows=999982.00 loops=1)
+        Filter: (t.rn = 1)
+        Buffers: shared hit=12009 read=255087, temp read=214334 written=214603
+        ->  WindowAgg  (cost=2922804.56..3260310.66 rows=15000272 width=168) (actual time=6058.506..7525.037 rows=999982.00 loops=1)
+              Window: w1 AS (PARTITION BY orders.o_custkey ORDER BY orders.o_orderdate, orders.o_orderkey ROWS UNBOUNDED PRECEDING)
+              Run Condition: (row_number() OVER w1 <= 1)
+              Storage: Memory  Maximum Storage: 17kB
+              Buffers: shared hit=12009 read=255087, temp read=214334 written=214603
+              ->  Sort  (cost=2922804.54..2960305.22 rows=15000272 width=28) (actual time=6058.481..6840.261 rows=15000000.00 loops=1)
+                    Sort Key: orders.o_custkey, orders.o_orderdate DESC, orders.o_orderkey DESC
+                    Sort Method: external merge  Disk: 571568kB
+                    Buffers: shared hit=12009 read=255087, temp read=214334 written=214603
+                    ->  Seq Scan on orders  (cost=0.00..417098.72 rows=15000272 width=28) (actual time=0.170..1231.782 rows=15000000.00 loops=1)
+                          Buffers: shared hit=12009 read=255087
+Planning Time: 0.062 ms
+Execution Time: 7695.707 ms

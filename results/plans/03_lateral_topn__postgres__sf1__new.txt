@@ -1,0 +1,34 @@
+-- -- 03 LATERAL ... LIMIT n
+-- Business question: Who are the 3 customers with the highest
+-- account balance in each country?
+SELECT n.n_name AS country, top3.c_name AS customer, top3.c_acctbal AS balance
+FROM nation n
+CROSS JOIN LATERAL (
+    SELECT c.c_custkey, c.c_name, c.c_acctbal
+    FROM customer c
+    WHERE c.c_nationkey = n.n_nationkey
+    ORDER BY c.c_acctbal DESC, c.c_custkey
+    LIMIT 3
+) top3
+ORDER BY country, balance DESC
+
+Sort  (cost=143819.00..143819.18 rows=75 width=33) (actual time=203.020..203.022 rows=75.00 loops=1)
+  Sort Key: n.n_name, c.c_acctbal DESC
+  Sort Method: quicksort  Memory: 28kB
+  Buffers: shared hit=95001
+  ->  Nested Loop  (cost=5752.55..143816.66 rows=75 width=33) (actual time=8.524..202.960 rows=75.00 loops=1)
+        Buffers: shared hit=95001
+        ->  Seq Scan on nation n  (cost=0.00..1.25 rows=25 width=16) (actual time=0.004..0.006 rows=25.00 loops=1)
+              Buffers: shared hit=1
+        ->  Limit  (cost=5752.55..5752.56 rows=3 width=33) (actual time=8.117..8.118 rows=3.00 loops=25)
+              Buffers: shared hit=95000
+              ->  Sort  (cost=5752.55..5767.55 rows=6000 width=33) (actual time=8.117..8.117 rows=3.00 loops=25)
+                    Sort Key: c.c_acctbal DESC, c.c_custkey
+                    Sort Method: top-N heapsort  Memory: 25kB
+                    Buffers: shared hit=95000
+                    ->  Seq Scan on customer c  (cost=0.00..5675.00 rows=6000 width=33) (actual time=0.002..7.601 rows=6000.00 loops=25)
+                          Filter: (c_nationkey = n.n_nationkey)
+                          Rows Removed by Filter: 144000
+                          Buffers: shared hit=95000
+Planning Time: 0.050 ms
+Execution Time: 203.032 ms

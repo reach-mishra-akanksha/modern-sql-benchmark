@@ -1,0 +1,85 @@
+-- -- 02 ROLLUP
+-- Business question: How many orders do we have at each priority level,
+-- what are they worth, and what is the grand total?
+SELECT
+    o_orderpriority    AS priority,
+    COUNT(*)           AS orders,
+    SUM(o_totalprice)  AS order_value
+FROM orders
+GROUP BY ROLLUP (o_orderpriority)
+ORDER BY priority NULLS LAST
+
+┌─────────────────────────────────────┐
+│┌───────────────────────────────────┐│
+││    Query Profiling Information    ││
+│└───────────────────────────────────┘│
+└─────────────────────────────────────┘
+EXPLAIN ANALYZE -- 02 ROLLUP -- Business question: How many orders do we have at each priority level, -- what are they worth, and what is the grand total? SELECT     o_orderpriority    AS priority,     COUNT(*)           AS orders,     SUM(o_totalprice)  AS order_value FROM orders GROUP BY ROLLUP (o_orderpriority) ORDER BY priority NULLS LAST
+┌────────────────────────────────────────────────┐
+│┌──────────────────────────────────────────────┐│
+││              Total Time: 0.0026s             ││
+│└──────────────────────────────────────────────┘│
+└────────────────────────────────────────────────┘
+┌───────────────────────────┐
+│           QUERY           │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│      EXPLAIN_ANALYZE      │
+│    ────────────────────   │
+│                           │
+│           0 rows          │
+│           0.00s           │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│          ORDER_BY         │
+│    ────────────────────   │
+│    tpch_sf1.main.orders   │
+│    .o_orderpriority ASC   │
+│                           │
+│                           │
+│                           │
+│           6 rows          │
+│           0.00s           │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│       HASH_GROUP_BY       │
+│    ────────────────────   │
+│         Groups: #0        │
+│                           │
+│        Aggregates:        │
+│        count_star()       │
+│    sum_no_overflow(#1)    │
+│                           │
+│                           │
+│                           │
+│           6 rows          │
+│           0.02s           │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│         PROJECTION        │
+│    ────────────────────   │
+│      o_orderpriority      │
+│        o_totalprice       │
+│                           │
+│                           │
+│                           │
+│       1,500,000 rows      │
+│           0.00s           │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│         TABLE_SCAN        │
+│    ────────────────────   │
+│           Table:          │
+│    tpch_sf1.main.orders   │
+│                           │
+│   Type: Sequential Scan   │
+│                           │
+│        Projections:       │
+│      o_orderpriority      │
+│        o_totalprice       │
+│                           │
+│                           │
+│                           │
+│       1,500,000 rows      │
+│           0.00s           │
+└───────────────────────────┘

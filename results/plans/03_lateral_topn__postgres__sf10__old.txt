@@ -1,0 +1,47 @@
+-- -- 03 Classic: rank every row, then keep ranks 1-3
+-- Business question: Who are the 3 customers with the highest
+-- account balance in each country?
+SELECT country, customer, balance
+FROM (
+    SELECT n.n_name AS country, c.c_name AS customer, c.c_acctbal AS balance,
+           ROW_NUMBER() OVER (PARTITION BY c.c_nationkey
+                              ORDER BY c.c_acctbal DESC, c.c_custkey) AS rn
+    FROM customer c
+    JOIN nation n ON n.n_nationkey = c.c_nationkey
+) ranked
+WHERE rn <= 3
+ORDER BY country, balance DESC
+
+Sort  (cost=590569.07..594318.59 rows=1499807 width=33) (actual time=772.083..775.119 rows=75.00 loops=1)
+  Sort Key: ranked.country, ranked.balance DESC
+  Sort Method: quicksort  Memory: 28kB
+  Buffers: shared hit=2289 read=35400, temp read=11218 written=11251
+  ->  Subquery Scan on ranked  (cost=135018.97..354690.28 rows=1499807 width=33) (actual time=381.507..775.038 rows=75.00 loops=1)
+        Buffers: shared hit=2289 read=35400, temp read=11218 written=11251
+        ->  WindowAgg  (cost=135018.97..339692.21 rows=1499807 width=57) (actual time=381.506..775.020 rows=75.00 loops=1)
+              Window: w1 AS (PARTITION BY c.c_nationkey ORDER BY c.c_acctbal, c.c_custkey ROWS UNBOUNDED PRECEDING)
+              Run Condition: (row_number() OVER w1 <= 3)
+              Storage: Memory  Maximum Storage: 17kB
+              Buffers: shared hit=2289 read=35400, temp read=11218 written=11251
+              ->  Gather Merge  (cost=135018.83..309696.07 rows=1499807 width=49) (actual time=381.477..736.631 rows=1500000.00 loops=1)
+                    Workers Planned: 2
+                    Workers Launched: 2
+                    Buffers: shared hit=2289 read=35400, temp read=11218 written=11251
+                    ->  Sort  (cost=134018.81..135581.11 rows=624920 width=49) (actual time=375.201..491.077 rows=500000.00 loops=3)
+                          Sort Key: c.c_nationkey, c.c_acctbal DESC, c.c_custkey
+                          Sort Method: external merge  Disk: 30352kB
+                          Buffers: shared hit=2289 read=35400, temp read=11218 written=11251
+                          Worker 0:  Sort Method: external merge  Disk: 30136kB
+                          Worker 1:  Sort Method: external merge  Disk: 29256kB
+                          ->  Hash Join  (cost=1.56..52499.41 rows=624920 width=49) (actual time=0.147..94.151 rows=500000.00 loops=3)
+                                Hash Cond: (c.c_nationkey = n.n_nationkey)
+                                Buffers: shared hit=2259 read=35400
+                                ->  Parallel Seq Scan on customer c  (cost=0.00..43905.20 rows=624920 width=41) (actual time=0.100..29.833 rows=500000.00 loops=3)
+                                      Buffers: shared hit=2256 read=35400
+                                ->  Hash  (cost=1.25..1.25 rows=25 width=16) (actual time=0.037..0.037 rows=25.00 loops=3)
+                                      Buckets: 1024  Batches: 1  Memory Usage: 10kB
+                                      Buffers: shared hit=3
+                                      ->  Seq Scan on nation n  (cost=0.00..1.25 rows=25 width=16) (actual time=0.029..0.030 rows=25.00 loops=3)
+                                            Buffers: shared hit=3
+Planning Time: 0.078 ms
+Execution Time: 776.561 ms

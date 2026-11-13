@@ -1,0 +1,31 @@
+-- -- 04 IS DISTINCT FROM
+-- Business question: How often do customers change the priority of their
+-- orders? Count every order whose priority differs from the same customer's
+-- previous order (a customer's first order counts as a change).
+SELECT COUNT(*) AS priority_changes
+FROM (
+    SELECT o_orderpriority,
+           LAG(o_orderpriority) OVER (PARTITION BY o_custkey
+                                      ORDER BY o_orderdate, o_orderkey) AS prev_priority
+    FROM orders
+) o
+WHERE o_orderpriority IS DISTINCT FROM prev_priority
+
+Aggregate  (cost=323595.23..323595.24 rows=1 width=8) (actual time=1057.156..1057.157 rows=1.00 loops=1)
+  Buffers: shared hit=3245 read=23467, temp read=15936 written=15964
+  ->  Subquery Scan on o  (cost=267364.01..319863.98 rows=1492500 width=0) (actual time=565.791..1028.316 rows=1220527.00 loops=1)
+        Filter: ((o.o_orderpriority)::text IS DISTINCT FROM (o.prev_priority)::text)
+        Rows Removed by Filter: 279473
+        Buffers: shared hit=3245 read=23467, temp read=15936 written=15964
+        ->  WindowAgg  (cost=267364.01..301113.98 rows=1500000 width=61) (actual time=565.790..962.068 rows=1500000.00 loops=1)
+              Window: w1 AS (PARTITION BY orders.o_custkey ORDER BY orders.o_orderdate, orders.o_orderkey)
+              Storage: Memory  Maximum Storage: 17kB
+              Buffers: shared hit=3245 read=23467, temp read=15936 written=15964
+              ->  Sort  (cost=267363.98..271113.98 rows=1500000 width=29) (actual time=565.783..656.109 rows=1500000.00 loops=1)
+                    Sort Key: orders.o_custkey, orders.o_orderdate, orders.o_orderkey
+                    Sort Method: external merge  Disk: 63784kB
+                    Buffers: shared hit=3245 read=23467, temp read=15936 written=15964
+                    ->  Seq Scan on orders  (cost=0.00..41712.00 rows=1500000 width=29) (actual time=0.159..125.946 rows=1500000.00 loops=1)
+                          Buffers: shared hit=3245 read=23467
+Planning Time: 0.057 ms
+Execution Time: 1065.477 ms

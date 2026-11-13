@@ -1,0 +1,39 @@
+-- -- 05 bool_and() / bool_or()
+-- Business question: How many orders arrived completely on time,
+-- and how many had at least one item returned?
+SELECT
+    SUM(CASE WHEN all_on_time  THEN 1 ELSE 0 END) AS fully_on_time_orders,
+    SUM(CASE WHEN any_returned THEN 1 ELSE 0 END) AS orders_with_a_return
+FROM (
+    SELECT l_orderkey,
+           bool_and(l_receiptdate <= l_commitdate) AS all_on_time,
+           bool_or(l_returnflag = 'R')             AS any_returned
+    FROM lineitem
+    GROUP BY l_orderkey
+) per_order
+
+Aggregate  (cost=3788521.29..3788521.30 rows=1 width=16) (actual time=24436.941..25214.570 rows=1.00 loops=1)
+  Buffers: shared hit=3955 read=1070957, temp read=868506 written=1170829
+  ->  Finalize GroupAggregate  (cost=3652954.09..3782216.22 rows=420338 width=10) (actual time=21199.854..24715.640 rows=15000000.00 loops=1)
+        Group Key: lineitem.l_orderkey
+        Buffers: shared hit=3955 read=1070957, temp read=868506 written=1170829
+        ->  Gather Merge  (cost=3652954.09..3770446.76 rows=1008811 width=10) (actual time=21199.849..23262.725 rows=15003424.00 loops=1)
+              Workers Planned: 2
+              Workers Launched: 2
+              Buffers: shared hit=3955 read=1070957, temp read=868506 written=1170829
+              ->  Sort  (cost=3651954.07..3653004.91 rows=420338 width=10) (actual time=20827.399..21091.644 rows=5001141.33 loops=3)
+                    Sort Key: lineitem.l_orderkey
+                    Sort Method: external merge  Disk: 98992kB
+                    Buffers: shared hit=3955 read=1070957, temp read=868506 written=1170829
+                    Worker 0:  Sort Method: external merge  Disk: 98480kB
+                    Worker 1:  Sort Method: external merge  Disk: 96416kB
+                    ->  Partial HashAggregate  (cost=3308442.94..3605506.50 rows=420338 width=10) (actual time=8570.569..19702.503 rows=5001141.33 loops=3)
+                          Group Key: lineitem.l_orderkey
+                          Planned Partitions: 8  Batches: 169  Memory Usage: 10049kB  Disk Usage: 933480kB
+                          Buffers: shared hit=3939 read=1070957, temp read=795061 written=1097174
+                          Worker 0:  Batches: 169  Memory Usage: 9793kB  Disk Usage: 931416kB
+                          Worker 1:  Batches: 169  Memory Usage: 9793kB  Disk Usage: 908816kB
+                          ->  Parallel Seq Scan on lineitem  (cost=0.00..1324803.35 rows=24990735 width=18) (actual time=1.761..2519.811 rows=19995350.67 loops=3)
+                                Buffers: shared hit=3939 read=1070957
+Planning Time: 0.393 ms
+Execution Time: 25642.185 ms

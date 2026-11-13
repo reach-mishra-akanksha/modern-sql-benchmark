@@ -1,0 +1,220 @@
+-- -- 03 LATERAL ... LIMIT n
+-- Business question: Who are the 3 customers with the highest
+-- account balance in each country?
+SELECT n.n_name AS country, top3.c_name AS customer, top3.c_acctbal AS balance
+FROM nation n
+CROSS JOIN LATERAL (
+    SELECT c.c_custkey, c.c_name, c.c_acctbal
+    FROM customer c
+    WHERE c.c_nationkey = n.n_nationkey
+    ORDER BY c.c_acctbal DESC, c.c_custkey
+    LIMIT 3
+) top3
+ORDER BY country, balance DESC
+
+┌─────────────────────────────────────┐
+│┌───────────────────────────────────┐│
+││    Query Profiling Information    ││
+│└───────────────────────────────────┘│
+└─────────────────────────────────────┘
+EXPLAIN ANALYZE -- 03 LATERAL ... LIMIT n -- Business question: Who are the 3 customers with the highest -- account balance in each country? SELECT n.n_name AS country, top3.c_name AS customer, top3.c_acctbal AS balance FROM nation n CROSS JOIN LATERAL (     SELECT c.c_custkey, c.c_name, c.c_acctbal     FROM customer c     WHERE c.c_nationkey = n.n_nationkey     ORDER BY c.c_acctbal DESC, c.c_custkey     LIMIT 3 ) top3 ORDER BY country, balance DESC
+┌────────────────────────────────────────────────┐
+│┌──────────────────────────────────────────────┐│
+││              Total Time: 0.0108s             ││
+│└──────────────────────────────────────────────┘│
+└────────────────────────────────────────────────┘
+┌───────────────────────────┐
+│           QUERY           │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│      EXPLAIN_ANALYZE      │
+│    ────────────────────   │
+│                           │
+│           0 rows          │
+│           0.00s           │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│         PROJECTION        │
+│    ────────────────────   │
+│__internal_decompress_strin│
+│           g(#0)           │
+│             #1            │
+│             #2            │
+│                           │
+│                           │
+│                           │
+│          75 rows          │
+│           0.00s           │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│          ORDER_BY         │
+│    ────────────────────   │
+│        n.n_name ASC       │
+│    top3.c_acctbal DESC    │
+│                           │
+│                           │
+│                           │
+│          75 rows          │
+│           0.00s           │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│         PROJECTION        │
+│    ────────────────────   │
+│__internal_compress_string_│
+│        uhugeint(#0)       │
+│             #1            │
+│             #2            │
+│                           │
+│                           │
+│                           │
+│          75 rows          │
+│           0.00s           │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│         PROJECTION        │
+│    ────────────────────   │
+│          country          │
+│          customer         │
+│          balance          │
+│                           │
+│                           │
+│                           │
+│          75 rows          │
+│           0.00s           │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│      RIGHT_DELIM_JOIN     │
+│    ────────────────────   │
+│      Join Type: INNER     │
+│                           │
+│        Conditions:        │
+│     n_nationkey IS NOT    │
+│  DISTINCT FROM n_nationkey│
+│                           ├──────────────┬──────────────────────────────────────────────────────────────────────────────────────┐
+│       Delim Index: 1      │              │                                                                                      │
+│                           │              │                                                                                      │
+│                           │              │                                                                                      │
+│                           │              │                                                                                      │
+│           0 rows          │              │                                                                                      │
+│           0.00s           │              │                                                                                      │
+└─────────────┬─────────────┘              │                                                                                      │
+┌─────────────┴─────────────┐┌─────────────┴─────────────┐                                                          ┌─────────────┴─────────────┐
+│         TABLE_SCAN        ││         HASH_JOIN         │                                                          │       HASH_GROUP_BY       │
+│    ────────────────────   ││    ────────────────────   │                                                          │    ────────────────────   │
+│           Table:          ││      Join Type: INNER     │                                                          │         Groups: #0        │
+│    tpch_sf1.main.nation   ││                           │                                                          │                           │
+│                           ││        Conditions:        │                                                          │                           │
+│   Type: Sequential Scan   ││     n_nationkey IS NOT    │                                                          │                           │
+│                           ││  DISTINCT FROM n_nationkey│                                                          │                           │
+│        Projections:       ││                           ├───────────────────────────────────────────┐              │           0.00s           │
+│        n_nationkey        ││                           │                                           │              │                           │
+│           n_name          ││                           │                                           │              │                           │
+│                           ││                           │                                           │              │                           │
+│                           ││           0.00s           │                                           │              │                           │
+│                           ││                           │                                           │              │                           │
+│          25 rows          ││          75 rows          │                                           │              │          25 rows          │
+│           0.00s           ││          (0.00s)          │                                           │              │          (0.00s)          │
+└───────────────────────────┘└─────────────┬─────────────┘                                           │              └───────────────────────────┘
+                             ┌─────────────┴─────────────┐                             ┌─────────────┴─────────────┐
+                             │         PROJECTION        │                             │         DUMMY_SCAN        │
+                             │    ────────────────────   │                             │    ────────────────────   │
+                             │             #1            │                             │                           │
+                             │             #2            │                             │                           │
+                             │             #3            │                             │           0.00s           │
+                             │                           │                             │                           │
+                             │                           │                             │                           │
+                             │                           │                             │                           │
+                             │          75 rows          │                             │           0 rows          │
+                             │           0.00s           │                             │          (0.00s)          │
+                             └─────────────┬─────────────┘                             └───────────────────────────┘
+                             ┌─────────────┴─────────────┐
+                             │           FILTER          │
+                             │    ────────────────────   │
+                             │    (limit_rownum <= 3)    │
+                             │                           │
+                             │                           │
+                             │                           │
+                             │          75 rows          │
+                             │           0.00s           │
+                             └─────────────┬─────────────┘
+                             ┌─────────────┴─────────────┐
+                             │         PROJECTION        │
+                             │    ────────────────────   │
+                             │             #0            │
+                             │             #1            │
+                             │             #2            │
+                             │             #3            │
+                             │             #4            │
+                             │                           │
+                             │                           │
+                             │                           │
+                             │        150,000 rows       │
+                             │           0.00s           │
+                             └─────────────┬─────────────┘
+                             ┌─────────────┴─────────────┐
+                             │           WINDOW          │
+                             │    ────────────────────   │
+                             │        Projections:       │
+                             │     ROW_NUMBER() OVER     │
+                             │ (PARTITION BY n_nationkey │
+                             │  ORDER BY c.c_acctbal DESC│
+                             │   NULLS LAST, c.c_custkey │
+                             │     ASC NULLS LAST ROWS   │
+                             │      BETWEEN UNBOUNDED    │
+                             │ PRECEDING AND CURRENT ROW)│
+                             │                           │
+                             │                           │
+                             │                           │
+                             │        150,000 rows       │
+                             │           0.06s           │
+                             └─────────────┬─────────────┘
+                             ┌─────────────┴─────────────┐
+                             │         PROJECTION        │
+                             │    ────────────────────   │
+                             │         c_custkey         │
+                             │           c_name          │
+                             │         c_acctbal         │
+                             │        n_nationkey        │
+                             │                           │
+                             │                           │
+                             │                           │
+                             │        150,000 rows       │
+                             │           0.00s           │
+                             └─────────────┬─────────────┘
+                             ┌─────────────┴─────────────┐
+                             │         HASH_JOIN         │
+                             │    ────────────────────   │
+                             │      Join Type: INNER     │
+                             │                           │
+                             │        Conditions:        │
+                             │ c_nationkey = n_nationkey ├──────────────┐
+                             │                           │              │
+                             │                           │              │
+                             │                           │              │
+                             │        150,000 rows       │              │
+                             │           0.00s           │              │
+                             └─────────────┬─────────────┘              │
+                             ┌─────────────┴─────────────┐┌─────────────┴─────────────┐
+                             │         TABLE_SCAN        ││         DELIM_SCAN        │
+                             │    ────────────────────   ││    ────────────────────   │
+                             │           Table:          ││       Delim Index: 1      │
+                             │   tpch_sf1.main.customer  ││                           │
+                             │                           ││                           │
+                             │   Type: Sequential Scan   ││                           │
+                             │                           ││                           │
+                             │        Projections:       ││           0.00s           │
+                             │        c_nationkey        ││                           │
+                             │         c_custkey         ││                           │
+                             │           c_name          ││                           │
+                             │         c_acctbal         ││                           │
+                             │                           ││                           │
+                             │      Dynamic Filters:     ││                           │
+                             │  optional: c_nationkey>=0 ││                           │
+                             │  AND optional: c_nationkey││                           │
+                             │            <=24           ││                           │
+                             │                           ││                           │
+                             │                           ││                           │
+                             │                           ││                           │
+                             │        150,000 rows       ││           0 rows          │
+                             │           0.00s           ││          (0.00s)          │
+                             └───────────────────────────┘└───────────────────────────┘

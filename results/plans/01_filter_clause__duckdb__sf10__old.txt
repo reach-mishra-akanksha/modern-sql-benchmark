@@ -1,0 +1,139 @@
+-- -- 01 Classic: CASE inside the aggregate
+-- Business question: Each year, how many items did we ship,
+-- how many went by air, and how many arrived late?
+SELECT
+    EXTRACT(YEAR FROM l_shipdate)                              AS ship_year,
+    COUNT(*)                                                   AS total_items,
+    COUNT(CASE WHEN l_shipmode = 'AIR' THEN 1 END)             AS air_items,
+    COUNT(CASE WHEN l_receiptdate > l_commitdate THEN 1 END)   AS late_items
+FROM lineitem
+GROUP BY EXTRACT(YEAR FROM l_shipdate)
+ORDER BY ship_year
+
+┌─────────────────────────────────────┐
+│┌───────────────────────────────────┐│
+││    Query Profiling Information    ││
+│└───────────────────────────────────┘│
+└─────────────────────────────────────┘
+EXPLAIN ANALYZE -- 01 Classic: CASE inside the aggregate -- Business question: Each year, how many items did we ship, -- how many went by air, and how many arrived late? SELECT     EXTRACT(YEAR FROM l_shipdate)                              AS ship_year,     COUNT(*)                                                   AS total_items,     COUNT(CASE WHEN l_shipmode = 'AIR' THEN 1 END)             AS air_items,     COUNT(CASE WHEN l_receiptdate > l_commitdate THEN 1 END)   AS late_items FROM lineitem GROUP BY EXTRACT(YEAR FROM l_shipdate) ORDER BY ship_year
+┌────────────────────────────────────────────────┐
+│┌──────────────────────────────────────────────┐│
+││              Total Time: 0.115s              ││
+│└──────────────────────────────────────────────┘│
+└────────────────────────────────────────────────┘
+┌───────────────────────────┐
+│           QUERY           │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│      EXPLAIN_ANALYZE      │
+│    ────────────────────   │
+│                           │
+│           0 rows          │
+│           0.00s           │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│         PROJECTION        │
+│    ────────────────────   │
+│__internal_decompress_integ│
+│    ral_bigint(#0, 1992)   │
+│             #1            │
+│             #2            │
+│             #3            │
+│                           │
+│                           │
+│                           │
+│           7 rows          │
+│           0.00s           │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│          ORDER_BY         │
+│    ────────────────────   │
+│   main.date_part('year',  │
+│   tpch_sf10.main.lineitem │
+│      .l_shipdate) ASC     │
+│                           │
+│                           │
+│                           │
+│           7 rows          │
+│           0.00s           │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│         PROJECTION        │
+│    ────────────────────   │
+│__internal_compress_integra│
+│    l_utinyint(#0, 1992)   │
+│             #1            │
+│             #2            │
+│             #3            │
+│                           │
+│                           │
+│                           │
+│           7 rows          │
+│           0.00s           │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│         PROJECTION        │
+│    ────────────────────   │
+│__internal_decompress_integ│
+│    ral_bigint(#0, 1992)   │
+│             #1            │
+│             #2            │
+│             #3            │
+│                           │
+│                           │
+│                           │
+│           7 rows          │
+│           0.00s           │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│   PERFECT_HASH_GROUP_BY   │
+│    ────────────────────   │
+│         Groups: #0        │
+│                           │
+│        Aggregates:        │
+│        count_star()       │
+│         count(#1)         │
+│         count(#2)         │
+│                           │
+│                           │
+│                           │
+│           7 rows          │
+│           0.56s           │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│         PROJECTION        │
+│    ────────────────────   │
+│__internal_compress_integra│
+│     l_utinyint("year"     │
+│    (l_shipdate), 1992)    │
+│ CASE  WHEN ((l_shipmode = │
+│ 'AIR')) THEN (1) ELSE NULL│
+│             END           │
+│ CASE  WHEN ((l_receiptdate│
+│  > l_commitdate)) THEN (1)│
+│        ELSE NULL END      │
+│                           │
+│                           │
+│                           │
+│      59,986,052 rows      │
+│           0.55s           │
+└─────────────┬─────────────┘
+┌─────────────┴─────────────┐
+│         TABLE_SCAN        │
+│    ────────────────────   │
+│           Table:          │
+│  tpch_sf10.main.lineitem  │
+│                           │
+│   Type: Sequential Scan   │
+│                           │
+│        Projections:       │
+│         l_shipdate        │
+│         l_shipmode        │
+│       l_receiptdate       │
+│        l_commitdate       │
+│                           │
+│                           │
+│                           │
+│      59,986,052 rows      │
+│           0.21s           │
+└───────────────────────────┘
